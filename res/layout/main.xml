@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="#ffffff">
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_logo"
+            android:layout_gravity="center"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Faltam"
+            android:id="@+id/txtFaltam"
+            android:gravity="center"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00"
+            android:id="@+id/txtDaysLeft"
+            android:layout_gravity="center"
+            android:textSize="30dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dias"
+            android:id="@+id/txtDias"
+            android:layout_gravity="center"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15, 16, 17 de novembro de 2013"
+            android:id="@+id/textView3"
+            android:layout_gravity="center"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Penedo/Visconde de Mauá - RJ"
+            android:id="@+id/textView4"
+            android:layout_gravity="center"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="www.bmwg650gs.net"
+            android:id="@+id/textView3"
+            android:gravity="center|bottom"
+            android:autoLink="web"/>
+</LinearLayout>
+
