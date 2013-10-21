@@ -1,6 +1,11 @@
 package net.bmwg650gs;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.format.Time;
@@ -29,6 +34,37 @@ public class CountdownActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                LocationManager locationManager = (LocationManager) CountdownActivity.this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+                Criteria criteria = new Criteria();
+
+                criteria.setAccuracy(Criteria.ACCURACY_FINE);
+
+                String provider = locationManager.getBestProvider(criteria, true);
+
+                // Última posição obtida do usuário
+                Location localizacaoAtual = locationManager.getLastKnownLocation(provider);
+
+                // R. das Rosas, 544, Itatiaia - Rio de Janeiro
+                Location localizacaoDestino = new Location(Context.LOCATION_SERVICE);
+                localizacaoDestino.setLatitude(-22.44163);
+                localizacaoDestino.setLongitude(-44.53769);
+
+                TextView txtDistancia = (TextView) findViewById(R.id.txtDistancia);
+
+                float kilometers = localizacaoAtual.distanceTo(localizacaoDestino) / MIL;
+
+                txtDistancia.setText("e aproximadamente " + Math.round(kilometers) + " Kms (em linha reta)");
+
+                return null;
+            }
+        }.execute();
+
 
         final TextView txtFaltam = (TextView) findViewById(R.id.txtFaltam);
         final TextView txtDaysLeft = (TextView) findViewById(R.id.txtDaysLeft);
