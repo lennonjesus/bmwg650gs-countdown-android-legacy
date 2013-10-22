@@ -50,16 +50,23 @@ public class CountdownActivity extends Activity {
                 // Última posição obtida do usuário
                 Location localizacaoAtual = locationManager.getLastKnownLocation(provider);
 
-                // R. das Rosas, 544, Itatiaia - Rio de Janeiro
-                Location localizacaoDestino = new Location(Context.LOCATION_SERVICE);
-                localizacaoDestino.setLatitude(-22.44163);
-                localizacaoDestino.setLongitude(-44.53769);
-
                 TextView txtDistancia = (TextView) findViewById(R.id.txtDistancia);
 
-                float kilometers = localizacaoAtual.distanceTo(localizacaoDestino) / MIL;
+                if (localizacaoAtual != null) {
 
-                txtDistancia.setText("e aproximadamente " + Math.round(kilometers) + " Kms (em linha reta)");
+                    // R. das Rosas, 544, Itatiaia - Rio de Janeiro
+                    Location localizacaoDestino = new Location(Context.LOCATION_SERVICE);
+                    localizacaoDestino.setLatitude(-22.44163);
+                    localizacaoDestino.setLongitude(-44.53769);
+
+
+                    float kilometers = localizacaoAtual.distanceTo(localizacaoDestino) / MIL;
+
+                    txtDistancia.setText("e aproximadamente " + Math.round(kilometers) + " Kms (em linha reta)");
+
+                } else {
+                    txtDistancia.setText("");
+                }
 
                 return null;
             }
