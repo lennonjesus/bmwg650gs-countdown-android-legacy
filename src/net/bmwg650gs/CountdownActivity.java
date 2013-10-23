@@ -65,7 +65,7 @@ public class CountdownActivity extends Activity {
                     txtDistancia.setText("e aproximadamente " + Math.round(kilometers) + " Kms (em linha reta)");
 
                 } else {
-                    txtDistancia.setText("");
+                    txtDistancia.setText("---");
                 }
 
                 return null;
@@ -73,6 +73,11 @@ public class CountdownActivity extends Activity {
         }.execute();
 
 
+        showCountdown();
+
+    }
+
+    private void showCountdown() {
         final TextView txtFaltam = (TextView) findViewById(R.id.txtFaltam);
         final TextView txtDaysLeft = (TextView) findViewById(R.id.txtDaysLeft);
         final TextView txtDias = (TextView) findViewById(R.id.txtDias);
@@ -112,6 +117,5 @@ public class CountdownActivity extends Activity {
                 txtDias.setText("");
             }
         }.start();
-
     }
 }
