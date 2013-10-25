@@ -1,7 +1,9 @@
 package net.bmwg650gs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -10,8 +12,9 @@ import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -40,7 +43,11 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
 
     private LocationClient locationClient;
 
+    private Location localizacaoDestino;
+
     private TextView txtDistancia;
+
+    private CheckBox ckbAutoUpdate;
 
     private SharedPreferences sharedPreferences;
 
@@ -58,11 +65,14 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate()");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
         txtDistancia = (TextView) findViewById(R.id.txtDistancia);
+
+        ckbAutoUpdate = (CheckBox) findViewById(R.id.ckbAutoUpdate);
 
         locationRequest = LocationRequest.create();
 
@@ -88,13 +98,25 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
 
         locationClient = new LocationClient(this, this, this);
 
+        localizacaoDestino = new Location(Context.LOCATION_SERVICE);
+        localizacaoDestino.setLatitude(-22.44163);
+        localizacaoDestino.setLongitude(-44.53769);
 
         showCountdown();
 
     }
 
+    public void showLocation() {
+        Location localizacaoAtual = getLocation();
+
+        if (localizacaoAtual != null) {
+            txtDistancia.setText("e aproximadamente " + Math.round(localizacaoAtual.distanceTo(localizacaoDestino) / MIL) + " Kms (em linha reta)");
+        }
+    }
+
     @Override
     public void onStart() {
+        Log.d(TAG, "onStart()");
         super.onStart();
 
         locationClient.connect();
@@ -102,6 +124,7 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
 
     @Override
     public void onStop() {
+        Log.d(TAG, "onStop()");
 
         if (locationClient.isConnected()) {
             stopPeriodicUpdates();
@@ -113,29 +136,68 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
     }
 
     @Override
+    public void onPause() {
+        Log.d(TAG, "onPause()");
+
+        editor.putBoolean(LocationUtils.KEY_UPDATES_REQUESTED, areUpdatesRequested);
+        editor.commit();
+
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume()");
+
+        super.onResume();
+
+        if (sharedPreferences.contains(LocationUtils.KEY_UPDATES_REQUESTED)) {
+            areUpdatesRequested = sharedPreferences.getBoolean(LocationUtils.KEY_UPDATES_REQUESTED, false);
+            toggleAutoUpdate(null);
+
+        } else {
+            editor.putBoolean(LocationUtils.KEY_UPDATES_REQUESTED, false);
+            editor.commit();
+        }
+
+        Log.d(TAG, "areUpdatesRequested: " + areUpdatesRequested);
+        ckbAutoUpdate.setChecked(areUpdatesRequested);
+
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected()");
+
         isClientConnected = true;
 
-        Toast.makeText(this, "OK", Toast.LENGTH_SHORT);
-
         if (areUpdatesRequested) {
-//        TODO    startPeriodicUpdates();
+            startPeriodicUpdates();
         }
+
+        showLocation();
     }
 
     @Override
     public void onDisconnected() {
+        Log.d(TAG, "onDisconnected()");
+
         isClientConnected = false;
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        // TODO atualizar informacao na tela
+        Log.d(TAG, "onLocationChanged()");
+
+        showLocation();
 
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        Log.d(TAG, "onConnectionFailed()");
+
         /*
          * Google Play services can resolve some errors it detects.
          * If the error has a resolution, try sending an Intent to
@@ -152,6 +214,51 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
             // If no resolution is available, display a dialog to the user with the error.
             new QualquerCoisaHelper(this).showErrorDialog(connectionResult.getErrorCode());
         }
+    }
+
+    /*
+     * Handle results returned to this Activity by other Activities started with
+     * startActivityForResult(). In particular, the method onConnectionFailed() in
+     * LocationUpdateRemover and LocationUpdateRequester may call startResolutionForResult() to
+     * start an Activity that handles Google Play services problems. The result of this
+     * call returns here, to onActivityResult.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+        Log.d(TAG, "onActivityResult()");
+
+
+        // Choose what to do based on the request code
+        switch (requestCode) {
+
+            // If the request code matches the code sent in onConnectionFailed
+            case LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST:
+
+                switch (resultCode) {
+                    // If Google Play services resolved the problem
+                    case Activity.RESULT_OK:
+                        Log.d(TAG, getString(R.string.resolved));
+                        break;
+
+                    // If any other result was returned by Google Play services
+                    default:
+                        Log.d(TAG, getString(R.string.no_resolution));
+                        break;
+                }
+            default:
+                Log.d(TAG, getString(R.string.unknown_activity_request_code, requestCode));
+                break;
+        }
+    }
+
+    public Location getLocation() {
+
+        if (isGooglePlayServicesConnected()) {
+            return locationClient.getLastLocation();
+        }
+
+        return null;
     }
 
     /**
@@ -177,6 +284,16 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
         }
     }
 
+    public void toggleAutoUpdate(View view) {
+
+        if (ckbAutoUpdate.isChecked()) {
+            startUpdates();
+        } else {
+            stopUpdates();
+        }
+
+    }
+
     public void startUpdates() {
         areUpdatesRequested = true;
 
@@ -198,7 +315,10 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
      * to Location Services
      */
     private void startPeriodicUpdates() {
-        locationClient.requestLocationUpdates(locationRequest, this);
+        if (areUpdatesRequested && locationClient.isConnected()) {
+            locationClient.requestLocationUpdates(locationRequest, this);
+        }
+
         isPeriodicUpdatesEnabled = true;
     }
 
@@ -207,7 +327,9 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
      * Location Services
      */
     private void stopPeriodicUpdates() {
-        locationClient.removeLocationUpdates(this);
+        if (isPeriodicUpdatesEnabled && locationClient.isConnected()) {
+            locationClient.removeLocationUpdates(this);
+        }
         isPeriodicUpdatesEnabled = false;
     }
 
@@ -255,44 +377,3 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
     }
 
 }
-
-
-//
-//
-//
-//new AsyncTask<Void, Void, Void>() {
-//@Override
-//protected Void doInBackground(Void... voids) {
-//
-//        LocationManager locationManager = (LocationManager) CountdownActivity.this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-//
-//Criteria criteria = new Criteria();
-//
-//criteria.setAccuracy(Criteria.ACCURACY_FINE);
-//
-//String provider = locationManager.getBestProvider(criteria, true);
-//
-//// Última posição obtida do usuário
-//Location localizacaoAtual = locationManager.getLastKnownLocation(provider);
-//
-//TextView txtDistancia = (TextView) findViewById(R.id.txtDistancia);
-//
-//if (localizacaoAtual != null) {
-//
-//        // R. das Rosas, 544, Itatiaia - Rio de Janeiro
-//        Location localizacaoDestino = new Location(Context.LOCATION_SERVICE);
-//localizacaoDestino.setLatitude(-22.44163);
-//localizacaoDestino.setLongitude(-44.53769);
-//
-//
-//float kilometers = localizacaoAtual.distanceTo(localizacaoDestino) / MIL;
-//
-//txtDistancia.setText("e aproximadamente " + Math.round(kilometers) + " Kms (em linha reta)");
-//
-//} else {
-//        txtDistancia.setText("---");
-//}
-//
-//        return null;
-//}
-//        }.execute();

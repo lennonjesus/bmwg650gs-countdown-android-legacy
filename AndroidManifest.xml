@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="net.bmwg650gs"
-          android:versionCode="4"
-          android:versionName="2.1">
+          android:versionCode="5"
+          android:versionName="2.2">
 
     <uses-sdk android:minSdkVersion="10"/>
 
@@ -16,13 +16,6 @@
         <activity
                 android:name="net.bmwg650gs.CountdownActivity"
                 android:label="@string/app_title">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -66,5 +66,14 @@
             android:gravity="center|bottom"
             android:autoLink="web"/>
 
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Atualizar distância automaticamente"
+            android:id="@+id/ckbAutoUpdate"
+            android:onClick="toggleAutoUpdate"
+            android:layout_gravity="center"
+            android:checked="false"/>
+
 </LinearLayout>
 
