@@ -45,14 +45,14 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15, 16, 17 de novembro de 2013"
+            android:text="1, 2, 3 e 4 de maio de 2014"
             android:id="@+id/textView3"
             android:layout_gravity="center"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Penedo/Visconde de Mauá - RJ"
+            android:text="Morretes - PR"
             android:id="@+id/textView4"
             android:layout_gravity="center"/>
 

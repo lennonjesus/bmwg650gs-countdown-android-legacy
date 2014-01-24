@@ -49,6 +49,9 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
 
     private CheckBox ckbAutoUpdate;
 
+
+    // . . . 8
+
     private SharedPreferences sharedPreferences;
 
     private SharedPreferences.Editor editor;
@@ -99,8 +102,9 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
         locationClient = new LocationClient(this, this, this);
 
         localizacaoDestino = new Location(Context.LOCATION_SERVICE);
-        localizacaoDestino.setLatitude(-22.44163);
-        localizacaoDestino.setLongitude(-44.53769);
+
+        localizacaoDestino.setLatitude(-25.42378);
+        localizacaoDestino.setLongitude(-48.882769);
 
         showCountdown();
 
@@ -340,7 +344,7 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
         final TextView txtDias = (TextView) findViewById(R.id.txtDias);
 
         Time dataEvento = new Time();
-        dataEvento.set(15, 10, 2013);
+        dataEvento.set(1, 4, 2014);
         dataEvento.normalize(true);
 
         Time today = new Time();
