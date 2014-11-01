@@ -113,9 +113,10 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
     public void showLocation() {
         Location localizacaoAtual = getLocation();
 
-        if (localizacaoAtual != null) {
-            txtDistancia.setText("e aproximadamente " + Math.round(localizacaoAtual.distanceTo(localizacaoDestino) / MIL) + " Kms (em linha reta)");
-        }
+//        if (localizacaoAtual != null) {
+//            txtDistancia.setText("e aproximadamente " + Math.round(localizacaoAtual.distanceTo(localizacaoDestino) / MIL) + " Kms (em linha reta)");
+//        }
+        txtDistancia.setText("O local do encontro será definido em breve. \nFique atento aos tópicos do fórum!");
     }
 
     @Override
@@ -344,7 +345,7 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
         final TextView txtDias = (TextView) findViewById(R.id.txtDias);
 
         Time dataEvento = new Time();
-        dataEvento.set(1, 4, 2014);
+        dataEvento.set(18, 3, 2015);
         dataEvento.normalize(true);
 
         Time today = new Time();

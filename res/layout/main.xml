@@ -5,12 +5,19 @@
               android:layout_height="fill_parent"
               android:background="#ffffff">
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/txtSpace"
+        android:gravity="center"/>
+
     <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/ic_logo"
-            android:layout_gravity="center"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageViewMain"
+        android:src="@drawable/ic_logo_main"
+        android:layout_gravity="center_horizontal"/>
 
     <TextView
             android:layout_width="fill_parent"
@@ -45,7 +52,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1, 2, 3 e 4 de maio de 2014"
+            android:text="18, 19, 20 e 21 de abril de 2015"
             android:id="@+id/textView3"
             android:layout_gravity="center"/>
 
@@ -54,7 +61,8 @@
             android:layout_height="wrap_content"
             android:text="Morretes - PR"
             android:id="@+id/textView4"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+        android:visibility="invisible" />
 
 
 
@@ -73,7 +81,15 @@
             android:id="@+id/ckbAutoUpdate"
             android:onClick="toggleAutoUpdate"
             android:layout_gravity="center"
-            android:checked="false"/>
+            android:checked="false"
+        android:visibility="invisible" />
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_logo_brasao"
+            android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
 
