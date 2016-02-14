@@ -8,9 +8,9 @@ import android.location.Location;
  */
 public final class LocationUtils {
 
-    public static final String SHARED_PREFERENCES = "net.bmwg650gs.SHARED_PREFERENCES";
+    public static final String SHARED_PREFERENCES = "bmwg650gs.SHARED_PREFERENCES";
 
-    public static final String KEY_UPDATES_REQUESTED = "net.bmwg650gs.KEY_UPDATES_REQUESTED";
+    public static final String KEY_UPDATES_REQUESTED = "bmwg650gs.KEY_UPDATES_REQUESTED";
 
     /*
      * Define a request code to send to Google Play services
@@ -43,7 +43,7 @@ public final class LocationUtils {
      */
     public static String getLatLng(Context context, Location currentLocation) {
         if (currentLocation != null) {
-            return context.getString(R.string.latitude_longitude, currentLocation.getLatitude(), currentLocation.getLongitude());
+            return context.getString(net.bmwg650gs.R.string.latitude_longitude, currentLocation.getLatitude(), currentLocation.getLongitude());
         } else {
             return "";
         }

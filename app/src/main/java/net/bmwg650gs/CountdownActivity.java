@@ -71,11 +71,11 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
         Log.d(TAG, "onCreate()");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(bmwg650gs.R.layout.main);
 
-        txtDistancia = (TextView) findViewById(R.id.txtDistancia);
+        txtDistancia = (TextView) findViewById(bmwg650gs.R.id.txtDistancia);
 
-        ckbAutoUpdate = (CheckBox) findViewById(R.id.ckbAutoUpdate);
+        ckbAutoUpdate = (CheckBox) findViewById(bmwg650gs.R.id.ckbAutoUpdate);
 
         locationRequest = LocationRequest.create();
 
@@ -243,16 +243,16 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
                 switch (resultCode) {
                     // If Google Play services resolved the problem
                     case Activity.RESULT_OK:
-                        Log.d(TAG, getString(R.string.resolved));
+                        Log.d(TAG, getString(bmwg650gs.R.string.resolved));
                         break;
 
                     // If any other result was returned by Google Play services
                     default:
-                        Log.d(TAG, getString(R.string.no_resolution));
+                        Log.d(TAG, getString(bmwg650gs.R.string.no_resolution));
                         break;
                 }
             default:
-                Log.d(TAG, getString(R.string.unknown_activity_request_code, requestCode));
+                Log.d(TAG, getString(bmwg650gs.R.string.unknown_activity_request_code, requestCode));
                 break;
         }
     }
@@ -276,7 +276,7 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 
         if (ConnectionResult.SUCCESS == resultCode) {
-            Log.d(TAG, getString(R.string.play_services_available));
+            Log.d(TAG, getString(bmwg650gs.R.string.play_services_available));
             return true;
         } else {
             Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 0);
@@ -340,9 +340,9 @@ public class CountdownActivity extends FragmentActivity implements LocationListe
 
 
     public void showCountdown() {
-        final TextView txtFaltam = (TextView) findViewById(R.id.txtFaltam);
-        final TextView txtDaysLeft = (TextView) findViewById(R.id.txtDaysLeft);
-        final TextView txtDias = (TextView) findViewById(R.id.txtDias);
+        final TextView txtFaltam = (TextView) findViewById(bmwg650gs.R.id.txtFaltam);
+        final TextView txtDaysLeft = (TextView) findViewById(bmwg650gs.R.id.txtDaysLeft);
+        final TextView txtDias = (TextView) findViewById(bmwg650gs.R.id.txtDias);
 
         Time dataEvento = new Time();
         dataEvento.set(18, 3, 2015);

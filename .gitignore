@@ -48,3 +48,7 @@ target/*
 
 out/*
 gen/*
+
+build/
+
+app/build/
